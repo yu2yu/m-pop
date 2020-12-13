@@ -1,0 +1,10 @@
+dependencies {
+
+    // mybatis-plus
+    compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: '3.4.1'
+    // httpclient
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+
+}
+
+jar.enabled = true

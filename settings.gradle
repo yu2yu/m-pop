@@ -1,0 +1,8 @@
+rootProject.name = 'm-pop'
+include 'm-pop-common'
+include 'm-pop-product'
+include 'm-pop-order'
+include 'm-pop-coupon'
+include 'm-pop-ware'
+include 'm-pop-member'
+
