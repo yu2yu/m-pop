@@ -3,6 +3,7 @@ package com.yy.mpop.member.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.yy.mpop.member.openfeign.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,13 @@ import com.yy.mpop.common.utils.R;
 public class MemberController {
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private CouponService couponService;
+    @RequestMapping("/test/feign")
+    public R getCouponByMember(){
+        return couponService.listCouponByMember();
+    }
 
     /**
      * 列表

@@ -4,7 +4,6 @@ server:
 spring:
   application:
     name: m-pop-coupon
-#    数据库
   datasource:
     username: root
     password: root

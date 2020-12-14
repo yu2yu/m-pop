@@ -2,6 +2,8 @@ server:
   port: 8000
 
 spring:
+  application:
+    name: m-pop-member
   datasource:
     username: root
     password: root
