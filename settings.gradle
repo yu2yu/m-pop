@@ -5,4 +5,5 @@ include 'm-pop-order'
 include 'm-pop-coupon'
 include 'm-pop-ware'
 include 'm-pop-member'
+include 'm-pop-gateway'
 

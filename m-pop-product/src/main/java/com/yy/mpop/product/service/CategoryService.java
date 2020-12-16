@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.yy.mpop.common.utils.PageUtils;
 import com.yy.mpop.product.entity.CategoryEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,12 @@ import java.util.Map;
 public interface CategoryService extends IService<CategoryEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 查询分类树形结构
+     * @param parentId
+     * @return
+     */
+    List<CategoryEntity> queryCategoryTree(Long parentId);
 }
 

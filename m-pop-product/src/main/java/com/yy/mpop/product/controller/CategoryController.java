@@ -1,8 +1,10 @@
 package com.yy.mpop.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.yy.mpop.common.api.CommonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,11 +35,11 @@ public class CategoryController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
-        public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = categoryService.queryPage(params);
-
-        return R.ok().put("page", page);
+    @RequestMapping("/list/{parentId}")
+    public CommonResult<List<? extends CategoryEntity>>
+                                getCategoriesByParentId(@PathVariable("parentId") Long parentId){
+        List<CategoryEntity> categoryEntities = categoryService.queryCategoryTree(parentId);
+        return CommonResult.success(categoryEntities);
     }
 
 
