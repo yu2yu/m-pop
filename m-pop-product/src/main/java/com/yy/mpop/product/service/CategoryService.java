@@ -20,9 +20,8 @@ public interface CategoryService extends IService<CategoryEntity> {
 
     /**
      * 查询分类树形结构
-     * @param parentId
      * @return
      */
-    List<CategoryEntity> queryCategoryTree(Long parentId);
+    List<CategoryEntity> queryCategoryTree();
 }
 

@@ -14,7 +14,7 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 
 @EnableDiscoveryClient
-@SpringBootApplication()
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class GatewayApplication {
 
     public static void main(String[] args) {

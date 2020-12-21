@@ -1,12 +1,22 @@
+server:
+  port: 17000
+
 spring:
+  application:
+    name: m-pop-gateway
+
   cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
     gateway:
       routes:
-        - id: test_route
-          uri: https://www.baidu.com
+        - id: admin-api
+          uri: lb://m-pop-admin
           predicates:
-            - Query=url,baidu
-        - id: qq_route
-          uri: https://www.qq.com
+            - Path=/admin/**
+
+        - id: product-api
+          uri: lb://m-pop-product
           predicates:
-            - Query=url,qq
+            - Path=/product/**

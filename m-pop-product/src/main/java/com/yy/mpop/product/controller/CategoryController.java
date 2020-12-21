@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,10 +36,9 @@ public class CategoryController {
     /**
      * 列表
      */
-    @RequestMapping("/list/{parentId}")
-    public CommonResult<List<? extends CategoryEntity>>
-                                getCategoriesByParentId(@PathVariable("parentId") Long parentId){
-        List<CategoryEntity> categoryEntities = categoryService.queryCategoryTree(parentId);
+    @RequestMapping(value = "/list/tree",method = RequestMethod.GET)
+    public CommonResult<List<? extends CategoryEntity>> getCategoriesByParentId(){
+        List<CategoryEntity> categoryEntities = categoryService.queryCategoryTree();
         return CommonResult.success(categoryEntities);
     }
 

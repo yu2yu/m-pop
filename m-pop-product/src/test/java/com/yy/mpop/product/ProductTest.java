@@ -1,12 +1,18 @@
 package com.yy.mpop.product;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yy.mpop.product.entity.BrandEntity;
+import com.yy.mpop.product.entity.CategoryEntity;
 import com.yy.mpop.product.service.BrandService;
+import com.yy.mpop.product.service.CategoryService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 /**
  * @version 1.0
@@ -28,5 +34,17 @@ public class ProductTest {
         brandEntity.setName("HuaWei");
 
         brandService.save(brandEntity);
+    }
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @Test
+    public void testCateTree() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<CategoryEntity> categoryEntities = categoryService.queryCategoryTree();
+        System.out.println(objectMapper
+                .writerWithDefaultPrettyPrinter()
+                .writeValueAsString(categoryEntities));
     }
 }

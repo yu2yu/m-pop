@@ -6,3 +6,7 @@ dependencies {
     compile group: 'com.alibaba.cloud', name: 'spring-cloud-starter-alibaba-nacos-config'
     compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-gateway'
 }
+
+configurations.all {
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-web'
+}
