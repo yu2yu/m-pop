@@ -1,5 +1,6 @@
 package com.yy.mpop.product.service.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,36 +31,41 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return new PageUtils(page);
     }
 
-    @Override
-    public List<CategoryEntity> queryCategoryTree() {
-
-        // 先查出一级机构
+//    @Override
+//    public List<CategoryEntity> queryCategoryTree(Long parentId) {
 //        QueryWrapper<CategoryEntity> wrapper = new QueryWrapper<>();
 //        wrapper.eq("parent_cid",parentId);
-//        List<CategoryEntity> categoryEntities = baseMapper.selectList(wrapper);
+//        return baseMapper.selectList(wrapper);
+//    }
 
+    @Override
+    public List<CategoryEntity> queryCategoryTree(Long parentId,String name,Integer pageSize,Integer pageNum) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        if(StringUtils.isNotBlank(name)) {
+            queryWrapper.eq("name",name);
+        }
         List<CategoryEntity> categoryEntities = baseMapper.selectList(null);
-        // 将子节点放进childrenNodes里面
-        List<CategoryEntity> parentCategories =
-                categoryEntities.stream()
-                        // 筛选出来 父节点为 0的节点
-                        .filter((k) -> k.getParentCid() == 0)
-                        // 并且找出其子节点
-                        .map(k -> {
-                            k.setChildrenNodes(findChildren(categoryEntities,k.getCatId()));
-                            return k;
-                        })
-                        .collect(Collectors.toList());
-
-        return parentCategories;
+        return categoryEntities.stream().filter(k->k.getParentCid() == 0)
+                .map(k -> {
+                    k.setChildrenNodes(findChildren(categoryEntities,k.getCatId()));
+                    k.setChild_num(k.getChildrenNodes().size());
+                    return k;
+                }).collect(Collectors.toList());
     }
 
 
-    private List<CategoryEntity> findChildren(List<CategoryEntity> categoryEntities,long parentId){
+    @Override
+    public void removeCateByIds(List<Long> catIds) {
+        // TODO: 还需要删除其他关联的内容
+        this.removeByIds(catIds);
+    }
+
+    private List<CategoryEntity> findChildren(List<CategoryEntity> categoryEntities, long parentId){
 
         return categoryEntities.stream().filter(k->k.getParentCid() == parentId)
                 .map(k -> {
                     k.setChildrenNodes(findChildren(categoryEntities,k.getCatId()));
+                    k.setChild_num(k.getChildrenNodes().size());
                     return k;
                 }).collect(Collectors.toList());
 

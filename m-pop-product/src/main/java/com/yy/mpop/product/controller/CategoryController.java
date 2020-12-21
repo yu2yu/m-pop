@@ -36,9 +36,12 @@ public class CategoryController {
     /**
      * 列表
      */
-    @RequestMapping(value = "/list/tree",method = RequestMethod.GET)
-    public CommonResult<List<? extends CategoryEntity>> getCategoriesByParentId(){
-        List<CategoryEntity> categoryEntities = categoryService.queryCategoryTree();
+    @RequestMapping(value = "/list/tree/{parentId}",method = RequestMethod.GET)
+    public CommonResult<List<? extends CategoryEntity>> getCategoriesByParentId(@PathVariable("parentId") Long parentId,
+                                                        @RequestParam(value = "name") String name,
+                                                        @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                                                        @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum){
+        List<CategoryEntity> categoryEntities = categoryService.queryCategoryTree(parentId,name,pageSize,pageNum);
         return CommonResult.success(categoryEntities);
     }
 
@@ -76,11 +79,10 @@ public class CategoryController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] catIds){
-		categoryService.removeByIds(Arrays.asList(catIds));
-
-        return R.ok();
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    public CommonResult<String> delete(@RequestBody Long[] catIds){
+		categoryService.removeCateByIds(Arrays.asList(catIds));
+        return CommonResult.success("删除成功");
     }
 
 }

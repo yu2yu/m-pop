@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,9 +43,16 @@ public class ProductTest {
     @Test
     public void testCateTree() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        List<CategoryEntity> categoryEntities = categoryService.queryCategoryTree();
+        List<CategoryEntity> categoryEntities = categoryService.queryCategoryTree(1L);
         System.out.println(objectMapper
                 .writerWithDefaultPrettyPrinter()
                 .writeValueAsString(categoryEntities));
+    }
+
+    @Test
+    public void removeCateByIds() {
+        ArrayList<Long> longs = new ArrayList<>();
+        longs.add(1433L);
+        categoryService.removeCateByIds(longs);
     }
 }

@@ -2,6 +2,7 @@ package com.yy.mpop.product.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
@@ -19,7 +20,7 @@ import lombok.Data;
  */
 @Data
 @TableName("pms_category")
-public class CategoryEntity implements Serializable {
+public class CategoryEntity implements Serializable, Comparable<CategoryEntity> {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -42,6 +43,7 @@ public class CategoryEntity implements Serializable {
 	/**
 	 * 是否显示[0-不显示，1显示]
 	 */
+	@TableLogic(value = "1",delval = "0")
 	private Integer showStatus;
 	/**
 	 * 排序
@@ -61,6 +63,13 @@ public class CategoryEntity implements Serializable {
 	private Integer productCount;
 
 	@TableField(exist = false)
+	private int child_num;
+
+	@TableField(exist = false)
 	private List<CategoryEntity> childrenNodes;
 
+	@Override
+	public int compareTo(CategoryEntity o) {
+		return this.getSort() -  o.getSort();
+	}
 }
