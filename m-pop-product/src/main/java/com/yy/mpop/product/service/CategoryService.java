@@ -16,8 +16,6 @@ import java.util.Map;
  */
 public interface CategoryService extends IService<CategoryEntity> {
 
-    PageUtils queryPage(Map<String, Object> params);
-
     /**
      * 查询分类树形结构
      * @param parentId
@@ -26,7 +24,7 @@ public interface CategoryService extends IService<CategoryEntity> {
      * @param pageNum
      * @return
      */
-    List<CategoryEntity> queryCategoryTree(Long parentId,String name,Integer pageSize,Integer pageNum);
+    PageUtils queryCategoryTree(Long parentId,String name,Integer pageSize,Integer pageNum);
 
     /**
      * 逻辑删除分类

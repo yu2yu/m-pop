@@ -37,11 +37,11 @@ public class CategoryController {
      * 列表
      */
     @RequestMapping(value = "/list/tree/{parentId}",method = RequestMethod.GET)
-    public CommonResult<List<? extends CategoryEntity>> getCategoriesByParentId(@PathVariable("parentId") Long parentId,
+    public CommonResult<PageUtils> getCategoriesByParentId(@PathVariable("parentId") Long parentId,
                                                         @RequestParam(value = "name") String name,
-                                                        @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                                                        @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                                         @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum){
-        List<CategoryEntity> categoryEntities = categoryService.queryCategoryTree(parentId,name,pageSize,pageNum);
+        PageUtils categoryEntities = categoryService.queryCategoryTree(parentId,name,pageSize,pageNum);
         return CommonResult.success(categoryEntities);
     }
 
@@ -50,30 +50,28 @@ public class CategoryController {
      * 信息
      */
     @RequestMapping("/info/{catId}")
-    public R info(@PathVariable("catId") Long catId){
+    public CommonResult<CategoryEntity> info(@PathVariable("catId") Long catId){
 		CategoryEntity category = categoryService.getById(catId);
-
-        return R.ok().put("category", category);
+        return CommonResult.success(category);
     }
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody CategoryEntity category){
+    public CommonResult<String> save(@RequestBody CategoryEntity category){
+        // TODO: 关于此分类的属性
 		categoryService.save(category);
-
-        return R.ok();
+        return CommonResult.success("保存成功");
     }
 
     /**
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody CategoryEntity category){
+    public CommonResult<String> update(@RequestBody CategoryEntity category){
 		categoryService.updateById(category);
-
-        return R.ok();
+        return CommonResult.success("更新成功");
     }
 
     /**

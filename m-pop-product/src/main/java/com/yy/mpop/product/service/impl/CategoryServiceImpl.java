@@ -1,5 +1,6 @@
 package com.yy.mpop.product.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -22,35 +23,15 @@ import com.yy.mpop.product.service.CategoryService;
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<CategoryEntity> page = this.page(
-                new Query<CategoryEntity>().getPage(params),
-                new QueryWrapper<CategoryEntity>()
-        );
-
-        return new PageUtils(page);
-    }
-
-//    @Override
-//    public List<CategoryEntity> queryCategoryTree(Long parentId) {
-//        QueryWrapper<CategoryEntity> wrapper = new QueryWrapper<>();
-//        wrapper.eq("parent_cid",parentId);
-//        return baseMapper.selectList(wrapper);
-//    }
-
-    @Override
-    public List<CategoryEntity> queryCategoryTree(Long parentId,String name,Integer pageSize,Integer pageNum) {
-        QueryWrapper queryWrapper = new QueryWrapper();
+    public PageUtils queryCategoryTree(Long parentId,String name,Integer pageSize,Integer pageNum) {
+        QueryWrapper<CategoryEntity> queryWrapper = new QueryWrapper();
         if(StringUtils.isNotBlank(name)) {
             queryWrapper.eq("name",name);
         }
-        List<CategoryEntity> categoryEntities = baseMapper.selectList(null);
-        return categoryEntities.stream().filter(k->k.getParentCid() == 0)
-                .map(k -> {
-                    k.setChildrenNodes(findChildren(categoryEntities,k.getCatId()));
-                    k.setChild_num(k.getChildrenNodes().size());
-                    return k;
-                }).collect(Collectors.toList());
+        queryWrapper.eq("parent_cid",parentId);
+        Page<CategoryEntity> page = new Page<>(pageNum,pageSize);
+        IPage<CategoryEntity> pageInfo = this.page(page,queryWrapper);
+        return new PageUtils(pageInfo);
     }
 
 
@@ -58,16 +39,5 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     public void removeCateByIds(List<Long> catIds) {
         // TODO: 还需要删除其他关联的内容
         this.removeByIds(catIds);
-    }
-
-    private List<CategoryEntity> findChildren(List<CategoryEntity> categoryEntities, long parentId){
-
-        return categoryEntities.stream().filter(k->k.getParentCid() == parentId)
-                .map(k -> {
-                    k.setChildrenNodes(findChildren(categoryEntities,k.getCatId()));
-                    k.setChild_num(k.getChildrenNodes().size());
-                    return k;
-                }).collect(Collectors.toList());
-
     }
 }
