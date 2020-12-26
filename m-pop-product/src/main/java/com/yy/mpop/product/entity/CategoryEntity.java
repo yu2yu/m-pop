@@ -62,6 +62,9 @@ public class CategoryEntity implements Serializable, Comparable<CategoryEntity> 
 	 */
 	private Integer productCount;
 
+	@TableField(exist = false)
+	private List<CategoryEntity> children;
+
 	@Override
 	public int compareTo(CategoryEntity o) {
 		return this.getSort() -  o.getSort();

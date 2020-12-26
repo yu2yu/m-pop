@@ -2,6 +2,7 @@ package com.yy.mpop.product;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yy.mpop.product.dao.CategoryDao;
 import com.yy.mpop.product.entity.BrandEntity;
 import com.yy.mpop.product.entity.CategoryEntity;
 import com.yy.mpop.product.service.BrandService;
@@ -40,19 +41,25 @@ public class ProductTest {
     @Autowired
     private CategoryService categoryService;
 
-    @Test
-    public void testCateTree() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<CategoryEntity> categoryEntities = categoryService.queryCategoryTree(1L);
-        System.out.println(objectMapper
-                .writerWithDefaultPrettyPrinter()
-                .writeValueAsString(categoryEntities));
-    }
+
+    ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     public void removeCateByIds() {
         ArrayList<Long> longs = new ArrayList<>();
         longs.add(1433L);
         categoryService.removeCateByIds(longs);
+    }
+
+
+    @Autowired
+    private CategoryDao categoryDao;
+
+    @Test
+    public void testCategory() throws JsonProcessingException {
+        List<CategoryEntity> categoryEntities = categoryDao.selectList(null);
+        System.out.println(objectMapper
+                .writerWithDefaultPrettyPrinter()
+                .writeValueAsString(categoryEntities));
     }
 }

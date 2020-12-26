@@ -33,6 +33,12 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    public CommonResult<List<CategoryEntity>> getCategoriesByParentId(){
+        List<CategoryEntity> categoryEntities = categoryService.queryCategoryAll();
+        return CommonResult.success(categoryEntities);
+    }
+
     /**
      * 列表
      */

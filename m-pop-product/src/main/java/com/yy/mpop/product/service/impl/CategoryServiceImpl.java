@@ -36,6 +36,30 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
 
     @Override
+    public List<CategoryEntity> queryCategoryAll() {
+
+        List<CategoryEntity> categoryEntities = baseMapper.selectList(null);
+
+        return categoryEntities.stream()
+                .filter(k->k.getParentCid() == 0)
+                .map(k -> {
+                    k.setChildren(findCildren(categoryEntities,k.getCatId()));
+                    return k;
+                }).collect(Collectors.toList());
+
+    }
+
+    private List<CategoryEntity> findCildren(List<CategoryEntity> categoryEntities, Long parentId) {
+
+        return categoryEntities.stream().filter(k->k.getParentCid() == parentId)
+                .map(k -> {
+                    k.setChildren(findCildren(categoryEntities,k.getCatId()));
+                    return k;
+                }).collect(Collectors.toList());
+
+    }
+
+    @Override
     public void removeCateByIds(List<Long> catIds) {
         // TODO: 还需要删除其他关联的内容
         this.removeByIds(catIds);

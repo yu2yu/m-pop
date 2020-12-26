@@ -31,5 +31,7 @@ public interface CategoryService extends IService<CategoryEntity> {
      * @param catIds
      */
     void removeCateByIds(List<Long> catIds);
+
+    List<CategoryEntity> queryCategoryAll();
 }
 
